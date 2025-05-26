@@ -4,7 +4,7 @@
 > The cleaned structured metadata file (`clean_metadata_v2.parquet`) is stored in the shared Expanse Lustre file system and can be accessed at:  
 > `/expanse/lustre/projects/uci150/hzhao16/clean_metadata_v2.parquet`
 
----
+
 
 ##  Structured Data Preprocessing & Feature Engineering
 
@@ -22,7 +22,7 @@
    Columns like `'subfamily'`, `'species'`, and others with excessive missing values were removed.  
    *(Some preprocessing steps were previously included in Milestone 2.)*
 
----
+
 
 ##  Model Training: Random Forest (Structured Metadata)
 
@@ -32,7 +32,7 @@
   - `VectorAssembler` to combine features into a single `'features'` column
   - `StringIndexer` to encode `'order'` as the target `'label'`
 
----
+
 
 ##  Image Classification (CNN using PyTorch)
 
@@ -44,14 +44,14 @@
   - 15% test
 - Metrics: Accuracy and macro-F1 scores
 
----
+
 
 ##  Train/Test Split (Structured Metadata)
 
 - 80% training, 20% test
 - Random seed: `42` for reproducibility
 
----
+
 
 ##  Evaluation Results (Random Forest on Metadata)
 
@@ -67,7 +67,7 @@
   -  No underfitting  
 → Indicates the model is in a *"good fit"* region.
 
----
+
 
 ##  Conclusion
 
@@ -82,7 +82,7 @@
 - Hyperparameter tuning (e.g., tree depth, number of trees)
 - Try ensemble models like **GBT** or **LightGBM**
 
----
+
 
 ## SDSC Server Limitation Notice
 
