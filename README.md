@@ -91,5 +91,4 @@ Due to repeated **SDSC JupyterLab proxy timeout errors** and **Expanse Lustre fi
 - Accessing cropped image folders
 - CNN model training and evaluation
 - Validation of CNN model performance
-
-➡ These components will be revisited once SDSC server access is stable and fully restored.
+ These components will be revisited once SDSC server access is stable and fully restored.
