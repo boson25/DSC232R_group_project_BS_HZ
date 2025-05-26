@@ -6,9 +6,9 @@
 
 ---
 
-## 📊 Structured Data Preprocessing & Feature Engineering
+##  Structured Data Preprocessing & Feature Engineering
 
-### ✅ Feature Selection and Cleaning
+###  Feature Selection and Cleaning
 
 1. **Selected relevant features:**
    - `'coord-lat'`, `'coord-lon'`, `'image_measurement_value'`, `'area_fraction'`, `'scale_factor'`
@@ -24,7 +24,7 @@
 
 ---
 
-## 🌲 Model Training: Random Forest (Structured Metadata)
+##  Model Training: Random Forest (Structured Metadata)
 
 - **Label**: `'order'` (taxonomic order of the insect)
 - **Model**: PySpark ML Random Forest Classifier
@@ -34,7 +34,7 @@
 
 ---
 
-## 🧠 Image Classification (CNN using PyTorch)
+##  Image Classification (CNN using PyTorch)
 
 - **Model**: Convolutional Neural Network (CNN)
   - Architecture: Two convolutional blocks
@@ -46,14 +46,14 @@
 
 ---
 
-## 🧪 Train/Test Split (Structured Metadata)
+##  Train/Test Split (Structured Metadata)
 
 - 80% training, 20% test
 - Random seed: `42` for reproducibility
 
 ---
 
-## 📈 Evaluation Results (Random Forest on Metadata)
+##  Evaluation Results (Random Forest on Metadata)
 
 | Dataset | Accuracy | Macro F1 Score |
 | ------- | -------- | -------------- |
@@ -63,20 +63,20 @@
 ### Fit Diagnosis
 
 - Training and test scores are close:
-  - ✅ No overfitting
-  - ✅ No underfitting  
+  -  No overfitting
+  -  No underfitting  
 → Indicates the model is in a *"good fit"* region.
 
 ---
 
-## ✅ Conclusion
+##  Conclusion
 
 - The structured metadata-based model achieved:
   - **Accuracy**: ≈ 0.76
   - **Macro F1**: ≈ 0.68
 - Well-generalized performance — minimal train-test gap.
 
-### 📌 Next Steps
+###  Next Steps
 
 - Add more features (e.g., DNA barcodes, image embeddings)
 - Hyperparameter tuning (e.g., tree depth, number of trees)
@@ -84,7 +84,7 @@
 
 ---
 
-## ⚠️ SDSC Server Limitation Notice
+## SDSC Server Limitation Notice
 
 Due to repeated **SDSC JupyterLab proxy timeout errors** and **Expanse Lustre file system issues**, the following tasks from Milestone 3 could not be completed:
 
@@ -92,4 +92,4 @@ Due to repeated **SDSC JupyterLab proxy timeout errors** and **Expanse Lustre fi
 - CNN model training and evaluation
 - Validation of CNN model performance
 
-➡️ These components will be revisited once SDSC server access is stable and fully restored.
+➡ These components will be revisited once SDSC server access is stable and fully restored.
