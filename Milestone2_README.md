@@ -1,6 +1,25 @@
 # Data Exploration and Preprocessing of Insect Species Metadata and Images (BIOSCAN-5M)
 
-## 1. Data Exploration and Preliminary Analysis
+## 1. environment setting up
+Account: TG-CIS240277
+
+Partition: shared
+
+Time limit (min): 2000
+
+Number of cores: 15
+
+Memory required per node (GB): 240
+
+Environment Modules to be loaded: singularitypro
+
+Working Directory: home
+
+Type: JupyterLab
+
+<img width="1397" alt="image" src="https://github.com/user-attachments/assets/90277034-b8ca-48cd-87a9-01a570dbd4bf" />
+
+## 2. Data Exploration and Preliminary Analysis
 
 ### **Loading Metadata**
 - Load metadata including species classification, body size, and geographic location.
@@ -26,7 +45,7 @@
 - **Image Grid**: Display a 3x3 grid of randomly selected images from distinct classes.
 - **Top 10 Orders**: Rank and plot the top 10 insect orders based on image count.
 
-## 2. Handling Missing Values and Data Cleaning
+## 3. Handling Missing Values and Data Cleaning
 
 ### **Missing Value Handling**
 - Impute missing values in body size and geographic fields using mode or median.
@@ -35,7 +54,7 @@
 ### **Row Filtering**
 - Remove rows with incomplete or invalid data as needed.
 
-## 3. Image and DNA Data Preprocessing
+## 4. Image and DNA Data Preprocessing
 
 ### **Image Preprocessing**
 - Resize all images to 256×256 pixels (e.g., folder `train/1` sampled for testing).
@@ -48,7 +67,7 @@
 - Apply one-hot encoding to convert k-mers into numerical vectors.
 - Remove low-quality sequences or perform trimming/alignment as needed.
 
-## 4. Geographic Data Normalization
+## 5. Geographic Data Normalization
 
 ### **Coordinate Normalization**
 - Normalize latitude and longitude fields.
@@ -57,7 +76,7 @@
 ### **Geospatial Clustering**
 - Apply geohashing and K-Means clustering to group nearby samples for biogeographic analysis.
 
-## 5. Visualization and Reporting
+## 6. Visualization and Reporting
 
 ### **Summary Visualizations**
 - Body size distribution histogram
