@@ -1,6 +1,6 @@
 # Data Exploration and Preprocessing of Insect Species Metadata and Images (BIOSCAN-5M)
 
-## 1. environment setting up
+## 1. Environment setting up
 Account: TG-CIS240277
 
 Partition: shared
@@ -18,6 +18,11 @@ Working Directory: home
 Type: JupyterLab
 
 <img width="1397" alt="image" src="https://github.com/user-attachments/assets/90277034-b8ca-48cd-87a9-01a570dbd4bf" />
+
+
+### Data downloader 
+<img width="1005" alt="image" src="https://github.com/user-attachments/assets/8eef9529-f468-4e7d-bf61-f772ce6a3b2d" />
+
 
 ## 2. Data Exploration and Preliminary Analysis
 
