@@ -1,127 +1,174 @@
-#  Insect Order Classification with BIOSCAN-5M Dataset  
-*Using PySpark + Image + Structured Metadata*
+# BIOSCAN-5M: Large-Scale Insect Species Classification and Ecological Trait Analysis
+
+## Overview
+
+The **BIOSCAN-5M\_cropped\_256** dataset provides a comprehensive resource for advancing biodiversity informatics and ecological machine learning. With over 5 million standardized insect specimen images, DNA barcodes, taxonomic classifications, body size measurements, and geographic metadata, it enables scalable, multidimensional analysis of insect diversity.
+
+In this project, we employ **Apache Spark** to build distributed machine learning pipelines for:
+
+* Insect species classification
+* Population structure analysis
+* Ecological trait prediction
+
+We investigate the interplay between body size, taxonomy, and environmental variables, and assess how genetic divergence correlates with spatial separation, using Spark MLlib and PySpark tools.
+
+This work demonstrates the effectiveness of big data frameworks in extracting complex biogeographic and evolutionary patterns from large-scale ecological datasets.
 
 ---
 
-##  Usage
+## 🔧 Environment Setup
 
-1. **Set up the environment**  
-   Make sure necessary Python packages are installed and environment variables are configured for data and model caching.
+To process large-scale data, computations are executed on **SDSC Spark Cluster** with the following specs:
 
-2. **Prepare the data**  
-   Ensure the following files and folders are available:
-   - `BIOSCAN_5M_Insect_Dataset_metadata.csv`
-   - Cleaned metadata file:  
-     `/expanse/lustre/projects/uci150/hzhao16/clean_metadata_v2.parquet`
-   - Raw image data in the expected folder structure
+* **Account**: TG-CIS240277
+* **Partition**: shared
+* **Time limit**: 2000 min
+* **Cores**: 15
+* **Memory per node**: 240 GB
+* **Modules**: singularitypro
+* **Type**: JupyterLab
 
-3. **Run the notebook**  
-   Execute `Milestone3+4.ipynb` sequentially in Jupyter Notebook. The notebook covers both structured and image-based classification.
+## 🧪 Milestone 2: Data Exploration & Preprocessing
+
+### 1. Metadata & Image Inspection
+
+* Load metadata fields: taxonomy, body size, location.
+* Validate image files: check missing/corrupt files, inspect image sizes.
+* Sample image inspection from `cropped_256/` folder.
+
+### 2. Dataset Overview
+
+* Inspect schema and total entries.
+* Group image counts by insect order and family.
+
+### 3. Missing Value Analysis
+
+* Detect missing values in metadata.
+* Impute missing numeric values using median or mode.
+* Drop excessively missing columns.
+
+### 4. Statistical Summaries
+
+* Mean, median, std dev for body size, etc.
+
+### 5. Exploratory Visualizations
+
+* Histogram: Body size distribution
+* Bar chart: Top 10 insect families
+* Scatter: Specimen locations (lat/lon)
+* Image grid: Random 3x3 sample grid
+* Top 10 insect orders by image count
+
+### 6. Image Preprocessing
+
+* Resize: All images to 256×256
+* Normalize: Pixel values scaled to \[0, 1]
+* Augment: Random flips and rotations
+* Split: Train/Val/Test = 70%/15%/15%
+
+### 7. DNA Sequence Processing
+
+* Tokenize barcodes into k-mers
+* One-hot encode k-mers
+* Remove poor quality sequences
+
+### 8. Geographic Data
+
+* Normalize coordinates
+* Apply geohashing and K-Means clustering
+
+### 9. Output
+
+* Export cleaned metadata to CSV/Parquet
+* Save preprocessed images
 
 ---
 
-##  Methodology Overview
+## 📊 Milestone 3+4: Classification Pipeline
 
-### A. Image-Based Classification Pipeline
+### A. Image Classification (CNN Baseline)
 
-- **Data Loading & Inspection**  
-  Metadata is loaded using PySpark. Sample images are visualized for qualitative review.
+* Visualized sample images by taxonomic group
+* Verified image quality and structure
+* Built a basic 3-epoch CNN in PyTorch/Keras as performance benchmark
+* Results were limited due to data volume and lack of augmentation
 
-- **Image Quality Verification**  
-  Images from each class are checked to ensure integrity and proper formatting.
+### B. Structured Metadata Classification
 
-- **Simple CNN Training**  
-  A basic CNN model is trained over 3 epochs for performance benchmarking.
+#### Feature Engineering
 
-- **Feature Importance**  
-  A structured Random Forest model evaluates feature significance, especially `sequence_length`.
+* Selected numerical features:
 
----
+  * `'coord-lat'`, `'coord-lon'`, `'image_measurement_value'`, `'area_fraction'`, `'scale_factor'`, `'sequence_length'`
+  * Taxonomic field: `'inferred_ranks'`
+* Imputation:
 
-### B. Structured Metadata Classification Pipeline
+  * Categorical: Mode (e.g. `'family'`)
+  * Numerical: Median
+  * Dropped fields with >60% missing (e.g. `'subfamily'`, `'species'`)
 
-####  Feature Engineering & Cleaning
+#### Model Pipeline (PySpark)
 
-- Selected features:  
-  `'coord-lat'`, `'coord-lon'`, `'image_measurement_value'`, `'area_fraction'`, `'scale_factor'`,  
-  Later added: `'sequence_length'`, `'inferred_ranks'`
+* **Target**: `'order'` (insect order)
+* **Pipeline**:
 
-- Imputation:  
-  - Categorical: Mode imputation (e.g., `'country'`, `'family'`)  
-  - Numerical: Median imputation  
-  - Dropped high-missing columns like `'subfamily'`, `'species'`
+  * `VectorAssembler`
+  * `StandardScaler`
+  * `StringIndexer`
+  * `RandomForestClassifier`
+* Split: 80% training / 20% test
 
-#### ️ Model Training (PySpark)
-
-- **Target**: `'order'` (insect taxonomic order)  
-- **Pipeline**:  
-  `VectorAssembler` → `StandardScaler` → `StringIndexer` → `RandomForestClassifier`  
-- **Split**: 80% train / 20% test (random seed 42)
-
-####  Hyperparameter Tuning & Results
-
+#### Hyperparameter Tuning
 
 | Model | maxDepth | numTrees | Train Acc | Train F1 | Test Acc | Test F1 |
-|-------|----------|----------|-----------|----------|----------|---------|
+| ----- | -------- | -------- | --------- | -------- | -------- | ------- |
 | 1     | 3        | 10       | 0.7509    | 0.6745   | 0.7511   | 0.6748  |
 | 2     | 5        | 10       | 0.7567    | 0.6782   | 0.7570   | 0.6786  |
 | 3     | 5        | 15       | 0.7573    | 0.6787   | 0.7576   | 0.6791  |
 
-- All models performed consistently well with minimal signs of overfitting or underfitting.  
-- **Best model: `maxDepth=5`, `numTrees=15`** with highest accuracy and F1 score on both train and test sets.
+#### Feature Importance
 
-####  Feature Importance
-
-- `sequence_length`: >80% importance  
-- `area_fraction`, `image_measurement_value`: moderate importance  
-- Other features (geo, inferred_ranks): minor impact
+* `sequence_length`: >80% importance
+* `area_fraction`, `image_measurement_value`: moderate
+* Geo features: minor
 
 ---
 
-##  Results Summary
+## ✅ Results Summary
 
-- **Structured Model**  
-  - Best Test Accuracy: **0.7576**  
-  - Best Test F1 Score: **0.6791**
+* **Structured Model**:
 
-- **Key Insight**:  
-  DNA barcode length is a strong signal for taxonomic classification.  
-  Image features provide additional context.
+  * Test Accuracy: **75.76%**
+  * Test F1 Score: **0.6791**
+* **Key Finding**: DNA barcode length is the most predictive feature
 
----
+## ⚙️ Technical Contributions
 
-##  Technical Highlights
+* Scalable Spark pipeline for distributed metadata processing
+* Feature cleaning and encoding for classification
+* Integration of image and structured data modalities
+* Visualization support for data insights
 
-- Scalable Spark pipeline for metadata processing  
-- Basic CNN for image classification  
-- Feature engineering and standardization  
+## 🔍 Limitations
 
----
+* Image model trained on limited subset and epochs
+* No categorical feature integration in structured model
+* No data augmentation used in CNN model
 
-##  Limitations
+## 🚀 Future Directions
 
-- Image model limited to one order due to data volume  
-- CNN used only 3 epochs with no augmentation  
-- Structured model did not yet include categorical fields
+* Add categorical features (e.g., `country`, `family`)
+* Deepen CNN architecture, expand image training epochs
+* Apply data augmentation: rotation, flipping, cropping
+* Add stronger models: Gradient Boosting, MLP, Logistic Regression
+* Explore multimodal fusion: combine image and structured inputs
 
----
+## 📌 Conclusion
 
-##  Future Directions
+This project builds a foundational pipeline for analyzing large-scale insect biodiversity data using Apache Spark. We:
 
-- Deepen CNN architecture & increase training epochs  
-- Add data augmentation (rotation, scaling, color)  
-- Encode and integrate categorical metadata  
-- Try stronger models: Gradient Boosting, Logistic Regression, Neural Networks  
-- Explore multi-modal fusion (image + metadata)
+* Successfully applied Random Forest on structured features
+* Identified `sequence_length` as a dominant signal
+* Explored baseline CNN for image-based classification
 
----
-
-## Conclusion
-
-This project provides a baseline pipeline for classifying insect orders using both structured and unstructured data from the BIOSCAN-5M dataset. Results show that:
-
-- The model achieves solid performance (75.8% accuracy)  
-- DNA sequence length is the most predictive feature  
-- Structured and image pipelines complement each other for future improvement
-
-> Future work will involve more advanced modeling, richer feature sets, and expanded data scope.
+The combination of high-dimensional genetic, geographic, and visual data shows promising potential for future ecological ML research. Further improvements can expand on data integration and model depth to build more accurate and interpretable biodiversity classification systems.
