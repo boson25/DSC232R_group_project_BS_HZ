@@ -16,7 +16,7 @@ This work demonstrates the effectiveness of big data frameworks in extracting co
 
 ---
 
-## 🔧 Environment Setup
+##  Environment Setup
 
 To process large-scale data, computations are executed on **SDSC Spark Cluster** with the following specs:
 
@@ -28,7 +28,7 @@ To process large-scale data, computations are executed on **SDSC Spark Cluster**
 * **Modules**: singularitypro
 * **Type**: JupyterLab
 
-## 🧪 Milestone 2: Data Exploration & Preprocessing
+##  Milestone 2: Data Exploration & Preprocessing
 
 ### 1. Metadata & Image Inspection
 
@@ -84,7 +84,7 @@ To process large-scale data, computations are executed on **SDSC Spark Cluster**
 
 ---
 
-## 📊 Milestone 3+4: Classification Pipeline
+##  Milestone 3+4: Classification Pipeline
 
 ### A. Image Classification (CNN Baseline)
 
@@ -134,7 +134,7 @@ To process large-scale data, computations are executed on **SDSC Spark Cluster**
 
 ---
 
-## ✅ Results Summary
+##  Results Summary
 
 * **Structured Model**:
 
@@ -142,20 +142,20 @@ To process large-scale data, computations are executed on **SDSC Spark Cluster**
   * Test F1 Score: **0.6791**
 * **Key Finding**: DNA barcode length is the most predictive feature
 
-## ⚙️ Technical Contributions
+##  Technical Contributions
 
 * Scalable Spark pipeline for distributed metadata processing
 * Feature cleaning and encoding for classification
 * Integration of image and structured data modalities
 * Visualization support for data insights
 
-## 🔍 Limitations
+##  Limitations
 
 * Image model trained on limited subset and epochs
 * No categorical feature integration in structured model
 * No data augmentation used in CNN model
 
-## 🚀 Future Directions
+##  Future Directions
 
 * Add categorical features (e.g., `country`, `family`)
 * Deepen CNN architecture, expand image training epochs
@@ -163,7 +163,7 @@ To process large-scale data, computations are executed on **SDSC Spark Cluster**
 * Add stronger models: Gradient Boosting, MLP, Logistic Regression
 * Explore multimodal fusion: combine image and structured inputs
 
-## 📌 Conclusion
+##  Conclusion
 
 This project builds a foundational pipeline for analyzing large-scale insect biodiversity data using Apache Spark. We:
 
